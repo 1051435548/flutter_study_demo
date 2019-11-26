@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 
-class YoungApp2 extends StatelessWidget {
-  const YoungApp2() : super();
+class YListView extends StatelessWidget {
+  const YListView() : super();
 
   @override
   Widget build(BuildContext context) {

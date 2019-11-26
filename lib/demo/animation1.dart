@@ -1,14 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class YoungApp1 extends StatefulWidget {
-  const YoungApp1({Key key}) : super(key: key);
+class Animation1 extends StatefulWidget {
+  const Animation1({Key key}) : super(key: key);
 
   @override
   _YoungAppState createState() => _YoungAppState();
 }
 
-class _YoungAppState extends State<YoungApp1>
+class _YoungAppState extends State<Animation1>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
 
