@@ -22,7 +22,7 @@ class _OpenDoorState extends State<OpenDoor> {
         title: new Text(
           '开门',
           style: new TextStyle(
-              color: Colors.grey[500], fontWeight: FontWeight.bold),
+              color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
