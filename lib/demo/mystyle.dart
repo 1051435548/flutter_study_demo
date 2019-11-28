@@ -1,3 +1,4 @@
+import 'package:Flutter/demo/mystyle2.dart';
 import 'package:flutter/material.dart';
 
 class MyStyle extends StatelessWidget {
@@ -62,7 +63,18 @@ class _Home extends StatelessWidget {
               //文本行
               _ColumnThree(),
               //按钮行，与上面不同的是这里是方法而不是类
-              _columnFour,
+              new Container(
+                child: new RaisedButton(
+                  color: Colors.blue,
+                  onPressed: () {
+                    _submit(context);
+                  },
+                  child: new Text(
+                    'Click Me',
+                    style: new TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
             ],
           ),
         ],
@@ -70,24 +82,11 @@ class _Home extends StatelessWidget {
     );
   }
 
-  static _submit() {
-    print('我被点了');
+  void _submit(BuildContext context) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return MyStyle2();
+    }));
   }
-
-  // ignore: slash_for_doc_comments
-  /**
-   * 按钮行
-   */
-  Widget _columnFour = new Container(
-    child: new RaisedButton(
-      color: Colors.blue,
-      onPressed: _submit,
-      child: new Text(
-        'Click Me',
-        style: new TextStyle(color: Colors.white),
-      ),
-    ),
-  );
 }
 
 // ignore: slash_for_doc_comments
