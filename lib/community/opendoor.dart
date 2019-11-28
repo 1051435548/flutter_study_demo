@@ -11,7 +11,8 @@ class OpenDoor extends StatefulWidget {
 }
 
 class _OpenDoorState extends State<OpenDoor> {
-  String dropdownValue;
+  String villageValue;
+  String gateValue;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +67,6 @@ class _OpenDoorState extends State<OpenDoor> {
    * 选择下拉小区与大门样式
    */
   Widget _selectDropDown(BuildContext context) {
-    const list = ['1', '2', '3'];
     return new Padding(
       padding:
           EdgeInsets.only(left: 50.0, top: 30.0, right: 50.0, bottom: 20.0),
@@ -78,14 +78,14 @@ class _OpenDoorState extends State<OpenDoor> {
               style: new TextStyle(color: Colors.grey[500]),
             ),
             trailing: DropdownButton<String>(
-              value: dropdownValue,
+              value: villageValue,
               hint: const Text('请选择'),
               onChanged: (String newValue) {
                 setState(() {
-                  dropdownValue = newValue;
+                  villageValue = newValue;
                 });
               },
-              items: <String>['天龙小区', '阳光小区', '湖畔小区', '阳光小区']
+              items: <String>['天龙小区', '阳光小区', '湖畔小区', '花园小区']
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
@@ -100,11 +100,11 @@ class _OpenDoorState extends State<OpenDoor> {
               style: new TextStyle(color: Colors.grey[500]),
             ),
             trailing: DropdownButton<String>(
-              value: dropdownValue,
+              value: gateValue,
               hint: const Text('请选择'),
               onChanged: (String newValue) {
                 setState(() {
-                  dropdownValue = newValue;
+                  gateValue = newValue;
                 });
               },
               items: <String>['22座大门', '23座大门', '24座大门', '25座大门']
