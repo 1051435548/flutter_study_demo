@@ -1,6 +1,7 @@
 import 'package:Flutter/community/bindhouse.dart';
 import 'package:Flutter/community/binduser.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -12,6 +13,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  bool _obscureText = true;
+
   @override
   Widget build(BuildContext context) {
     BorderSide _outBorderSide = BorderSide(color: Colors.grey[500], width: 0);
@@ -137,10 +140,24 @@ class _LoginState extends State<Login> {
         ),
         new Expanded(
           child: new TextField(
+            obscureText: _obscureText,
             decoration: InputDecoration(
 //              border: OutlineInputBorder(),
               hintText: '请输入密码',
               hintStyle: new TextStyle(fontSize: 14, color: Colors.grey[400]),
+              suffixIcon: GestureDetector(
+                dragStartBehavior: DragStartBehavior.down,
+                onTap: () {
+                  setState(() {
+                    _obscureText = !_obscureText;
+                  });
+                },
+                child: Icon(
+                  _obscureText ? Icons.visibility : Icons.visibility_off,
+                  semanticLabel:
+                      _obscureText ? 'show password' : 'hide password',
+                ),
+              ),
 //              labelText: '',
 //              prefixIcon: Icon(Icons.person),
             ),

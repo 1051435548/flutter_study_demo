@@ -21,8 +21,8 @@ class _OpenDoorState extends State<OpenDoor> {
         backgroundColor: Colors.white,
         title: new Text(
           '开门',
-          style: new TextStyle(
-              color: Colors.black, fontWeight: FontWeight.bold),
+          style:
+              new TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -46,19 +46,26 @@ class _OpenDoorState extends State<OpenDoor> {
       margin: EdgeInsets.only(top: (MediaQuery.of(context).size.height) / 6),
       width: 180.0,
       height: 180.0,
-      child: new FlatButton(
-        color: Colors.blue,
-        onPressed: () {
-          _openDoor(context);
-        },
-        child: new Text(
-          'OPEN',
-          style: new TextStyle(
-              color: Colors.white, fontSize: 28, fontWeight: FontWeight.w400),
+      decoration: BoxDecoration(shape: BoxShape.circle, boxShadow: [
+        BoxShadow(
+          color: Colors.lightBlue,
+          blurRadius: 20,
+          spreadRadius: 2,
         ),
-        shape: new RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(90.0))),
-      ),
+      ]),
+      child: FlatButton(
+          shape: new RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(90.0))),
+          color: Colors.blue,
+          onPressed: () {
+            _openDoor(context);
+          },
+          padding: EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10),
+          child: Text(
+            "OPEN",
+            style: TextStyle(
+                color: Colors.white, fontSize: 28, fontWeight: FontWeight.w400),
+          )),
     );
   }
 

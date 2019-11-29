@@ -7,12 +7,19 @@ class BindHouse extends StatefulWidget {
 
   const BindHouse({Key key}) : super(key: key);
   static const String routeName = '/bindhouse';
-  static const _houseList = ['1', '2', '3', '4'];
 }
 
 class _BindHouseState extends State<BindHouse> {
-  bool _checkValue1 = false;
-  bool _checkValue2 = false;
+  bool _checkValue = false;
+  final _houseList = <String>[
+    '天龙小区2401',
+    '天龙小区2402',
+    '天龙小区2403',
+    '碧桂园1街24号',
+    '碧桂园2街25号',
+    '阳光小区0128号',
+    '湖畔小区914号',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -62,29 +69,24 @@ class _BindHouseState extends State<BindHouse> {
    * 绑定房屋列表
    */
   Widget _ableBindHouses() {
-    return new ListView(
-      children: <Widget>[
-        new CheckboxListTile(
-          secondary: const Icon(Icons.home),
-          title: const Text('天龙小区2401'),
-          value: _checkValue2,
-          onChanged: (bool value) {
-            setState(() {
-              this._checkValue2 = !this._checkValue2;
-            });
-          },
-        ),
-        new CheckboxListTile(
-          secondary: const Icon(Icons.home),
-          title: const Text('天龙小区2402'),
-          value: _checkValue2,
-          onChanged: (bool value) {
-            setState(() {
-              this._checkValue2 = !this._checkValue2;
-            });
-          },
-        ),
-      ],
+    return new Scrollbar(
+      child: ListView.builder(
+        itemCount: _houseList.length,
+        itemBuilder: (BuildContext context, int index) {
+          final String item = _houseList[index];
+          return new CheckboxListTile(
+            secondary: const Icon(Icons.home),
+            title: new Text(item),
+            value: _checkValue,
+            onChanged: (bool value) {
+              print(index);
+              setState(() {
+                this._checkValue = !this._checkValue;
+              });
+            },
+          );
+        },
+      ),
     );
   }
 

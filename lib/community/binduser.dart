@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import 'bindhouse.dart';
@@ -12,6 +13,8 @@ class BindUser extends StatefulWidget {
 }
 
 class _BindUserState extends State<BindUser> {
+  bool _obscureText = true;
+
   @override
   Widget build(BuildContext context) {
     BorderSide _outBorderSide = BorderSide(color: Colors.grey[500], width: 0);
@@ -49,7 +52,7 @@ class _BindUserState extends State<BindUser> {
               _phoneWidget(),
               _smsCodeWidget(),
               const SizedBox(
-                height: 20.0,
+                height: 10.0,
               ),
               _bindUserButton(context),
             ],
@@ -100,10 +103,24 @@ class _BindUserState extends State<BindUser> {
         ),
         new Expanded(
           child: new TextField(
+            obscureText: _obscureText,
             decoration: InputDecoration(
 //              border: OutlineInputBorder(),
               hintText: '请输入密码',
               hintStyle: new TextStyle(fontSize: 14, color: Colors.grey[400]),
+              suffixIcon: GestureDetector(
+                dragStartBehavior: DragStartBehavior.down,
+                onTap: () {
+                  setState(() {
+                    _obscureText = !_obscureText;
+                  });
+                },
+                child: Icon(
+                  _obscureText ? Icons.visibility : Icons.visibility_off,
+                  semanticLabel:
+                      _obscureText ? 'show password' : 'hide password',
+                ),
+              ),
 //              labelText: '',
 //              prefixIcon: Icon(Icons.person),
             ),
@@ -127,6 +144,7 @@ class _BindUserState extends State<BindUser> {
         ),
         new Expanded(
           child: new TextField(
+            keyboardType: TextInputType.phone,
             decoration: InputDecoration(
 //              border: OutlineInputBorder(),
               hintText: '请输入手机号',
@@ -164,6 +182,8 @@ class _BindUserState extends State<BindUser> {
         ),
         new Expanded(
           child: new TextField(
+            maxLength: 6,
+            keyboardType: TextInputType.number,
             decoration: InputDecoration(
 //              border: OutlineInputBorder(),
               hintText: '请输入验证码',
