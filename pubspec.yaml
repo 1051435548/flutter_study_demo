@@ -45,6 +45,10 @@ flutter:
   # 把下面assets前面的空格删了
   assets:
     - images/lake.jpg
+    - images/facebook.png
+    - images/ins.png
+    - images/linkedin.png
+    - images/twitter.png
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
 
