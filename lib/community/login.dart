@@ -19,6 +19,8 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     BorderSide _outBorderSide = BorderSide(color: Colors.grey[500], width: 0);
     return Scaffold(
+      /// 防止点击输入框时页面被压缩
+      resizeToAvoidBottomInset: false,
       appBar: new AppBar(
         backgroundColor: Colors.white,
         title: new Text(

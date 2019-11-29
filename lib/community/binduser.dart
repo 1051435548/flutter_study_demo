@@ -19,6 +19,7 @@ class _BindUserState extends State<BindUser> {
   Widget build(BuildContext context) {
     BorderSide _outBorderSide = BorderSide(color: Colors.grey[500], width: 0);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: new AppBar(
         backgroundColor: Colors.white,
         title: new Text(
