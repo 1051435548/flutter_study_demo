@@ -1,8 +1,22 @@
-import 'package:Flutter/community/bindhouse.dart';
-import 'package:Flutter/community/binduser.dart';
+import 'dart:convert';
+
+import 'package:Flutter/utils/HttpUtils.dart';
+import 'package:Flutter/utils/LocalStore.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+
+import 'binduser.dart';
+
+enum DialogDemoAction {
+  cancel,
+  discard,
+  disagree,
+  agree,
+}
+
+Dio dio = Dio();
 
 class Login extends StatefulWidget {
   const Login({Key key}) : super(key: key);
@@ -13,7 +27,24 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _obscureText = true;
+  var _usernameText = '';
+  var _passwordText = '';
+
+  void showDemoDialog<T>({BuildContext context, Widget child}) {
+    showDialog<T>(
+      context: context,
+      builder: (BuildContext context) => child,
+    ).then<void>((T value) {
+      // The value passed to Navigator.pop() or null.
+      if (value != null) {
+        _scaffoldKey.currentState.showSnackBar(SnackBar(
+          content: Text('You selected: $value'),
+        ));
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +103,7 @@ class _LoginState extends State<Login> {
       color: Colors.teal,
       textColor: Colors.white,
       onPressed: () {
-        Navigator.pushNamed(context, BindUser.routeName);
+        _login(context);
       },
       child: Text(
         "登录",
@@ -90,7 +121,9 @@ class _LoginState extends State<Login> {
       width: double.infinity,
       height: 50,
       child: RaisedButton(
-        onPressed: () {},
+        onPressed: () {
+          _register(context);
+        },
         child: Text(
           "注册",
           style: new TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -115,6 +148,11 @@ class _LoginState extends State<Login> {
         ),
         new Expanded(
           child: new TextField(
+            onChanged: (text) {
+              setState(() {
+                _usernameText = text;
+              });
+            },
             decoration: InputDecoration(
 //              border: OutlineInputBorder(),
 //              hintText: '请输入账号',
@@ -143,6 +181,11 @@ class _LoginState extends State<Login> {
         new Expanded(
           child: new TextField(
             obscureText: _obscureText,
+            onChanged: (text) {
+              setState(() {
+                _passwordText = text;
+              });
+            },
             decoration: InputDecoration(
 //              border: OutlineInputBorder(),
               hintText: '请输入密码',
@@ -186,8 +229,58 @@ class _LoginState extends State<Login> {
   }
 
   Widget _bottomIcon(String icon) {
-    TextStyle _textStyle = new TextStyle(
-        color: Colors.teal, fontSize: 12, fontWeight: FontWeight.w600);
+//    TextStyle _textStyle = new TextStyle(
+//        color: Colors.teal, fontSize: 12, fontWeight: FontWeight.w600);
     return new IconButton(icon: Image.asset(icon), onPressed: () {});
   }
+
+  // ignore: slash_for_doc_comments
+  /**
+   * 登录的方法
+   */
+  _login(BuildContext context) async {
+    final ThemeData theme = Theme.of(context);
+    final TextStyle dialogTextStyle =
+        theme.textTheme.subhead.copyWith(color: theme.textTheme.caption.color);
+    const url = 'http://192.168.50.104:8181/authenticate';
+    HttpUtils.post(
+      url,
+      pathParams: null,
+      data: {"username": _usernameText, "password": _passwordText},
+    ).then((res) {
+      var decode = json.encode(res);
+      LocalStore.setLocalStorage('auth', decode).then((isOk) {
+        print('保存数据是否成功：$isOk');
+        if (isOk) {
+          Navigator.pushNamed(context, BindUser.routeName);
+        }
+      });
+    }).catchError((Object error) {
+      print('Http is catch：$error');
+      showDemoDialog<DialogDemoAction>(
+        context: context,
+        child: AlertDialog(
+          title: const Text('登录失败'),
+          content: Text(
+            '请输入正确的账号和密码',
+            style: dialogTextStyle,
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: const Text('确定'),
+              onPressed: () {},
+            )
+          ],
+        ),
+      );
+    }).whenComplete(() {
+      print('Http is Complete');
+    });
+  }
+
+  // ignore: slash_for_doc_comments
+  /**
+   * 注册的方法
+   */
+  _register(BuildContext context) {}
 }

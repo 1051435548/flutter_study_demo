@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:Flutter/models/auth.dart';
+import 'package:Flutter/utils/LocalStore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -158,7 +162,9 @@ class _BindUserState extends State<BindUser> {
         new MaterialButton(
           minWidth: 110.0,
           color: Colors.teal,
-          onPressed: () {},
+          onPressed: () {
+            _sendSMSCode(context);
+          },
           child: new Text(
             '发送验证码',
             style: new TextStyle(color: Colors.white),
@@ -209,12 +215,38 @@ class _BindUserState extends State<BindUser> {
       color: Colors.teal,
       textColor: Colors.white,
       onPressed: () {
-        Navigator.pushNamed(context, BindHouse.routeName);
+        _bindUser(context);
       },
       child: Text(
         "绑定",
         style: new TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
     );
+  }
+
+  // ignore: slash_for_doc_comments
+  /**
+   * 发送验证码的方法
+   */
+  _sendSMSCode(BuildContext context) {
+    LocalStore.removeLocalStorage('auth').then((isOK) {
+      print('删除key是否成功$isOK');
+    });
+  }
+
+  // ignore: slash_for_doc_comments
+  /**
+   * 绑定账号的方法
+   */
+  _bindUser(BuildContext context) {
+    Navigator.pushNamed(context, BindHouse.routeName);
+    LocalStore.getLocalStorage('auth').then((data) {
+      Map<String, dynamic> responseJson = json.decode(data);
+      Auth auth = new Auth.fromJson(responseJson);
+      print("本地的userId值: " + auth.userId.toString());
+      print("本地的token值: " + auth.token.toString());
+    }).catchError((error){
+      print('获取数据失败$error');
+    });
   }
 }
