@@ -268,7 +268,7 @@ class _LoginState extends State<Login> {
           actions: <Widget>[
             FlatButton(
               child: const Text('确定'),
-              onPressed: () {},
+              onPressed: () { Navigator.pop(context); },
             )
           ],
         ),
