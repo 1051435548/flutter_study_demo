@@ -101,7 +101,7 @@ class _BindHouseState extends State<BindHouse> {
       color: Colors.teal,
       textColor: Colors.white,
       onPressed: () {
-        Navigator.pushNamed(context, OpenDoor.routeName);
+
       },
       child: Text(
         "绑定",

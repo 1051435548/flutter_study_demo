@@ -27,8 +27,8 @@ class HttpUtils {
 
   static BaseOptions getDefOptions() {
     BaseOptions options = BaseOptions();
-    options.connectTimeout = 10 * 1000;
-    options.receiveTimeout = 20 * 1000;
+    options.connectTimeout = 5 * 1000;
+    options.receiveTimeout = 10 * 1000;
     options.contentType =
         ContentType.parse('application/x-www-form-urlencoded');
 

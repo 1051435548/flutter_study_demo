@@ -240,7 +240,7 @@ class _BindUserState extends State<BindUser> {
    */
   _bindUser(BuildContext context) {
     Navigator.pushNamed(context, BindHouse.routeName);
-    LocalStore.getLocalStorage('auth').then((data) {
+    LocalStore.getStringLocalStorage('auth').then((data) {
       Map<String, dynamic> responseJson = json.decode(data);
       Auth auth = new Auth.fromJson(responseJson);
       print("本地的userId值: " + auth.userId.toString());

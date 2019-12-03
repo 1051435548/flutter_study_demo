@@ -1,6 +1,10 @@
 import 'package:Flutter/community/login.dart';
+import 'package:Flutter/mobx/counter.dart';
+import 'package:Flutter/utils/LocalStore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
 
 class OpenDoor extends StatefulWidget {
   const OpenDoor({Key key}) : super(key: key);
@@ -11,8 +15,19 @@ class OpenDoor extends StatefulWidget {
 }
 
 class _OpenDoorState extends State<OpenDoor> {
+  final Counter counter = new Counter();
   String villageValue;
   String gateValue;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      LocalStore.getIntLocalStorage('opencount').then((count) {
+        counter.set(count);
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +46,7 @@ class _OpenDoorState extends State<OpenDoor> {
           children: <Widget>[
             _openDoorButton(context),
             _selectDropDown(context),
+            _openCount(context),
           ],
         ),
       ),
@@ -130,9 +146,51 @@ class _OpenDoorState extends State<OpenDoor> {
 
   // ignore: slash_for_doc_comments
   /**
+   * 开门次数
+   */
+  Widget _openCount(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text('开门次数: '),
+            Observer(
+              builder: (_) => Text(
+                '${counter.value}',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            )
+          ],
+        ),
+        Text('(本地存储中取值)'),
+        const SizedBox(height: 20),
+        SizedBox(
+          width: 300,
+          height: 50.0,
+          child: OutlineButton(
+            textColor: Colors.redAccent,
+            onPressed: () {
+              counter.set(0);
+            },
+            child: Text(
+              "重置次数",
+              style: new TextStyle(fontSize: 18),
+            ),
+          ),
+        )
+      ],
+    );
+  }
+
+  // ignore: slash_for_doc_comments
+  /**
    * 点击开门按钮
    */
   void _openDoor(BuildContext context) {
     Navigator.pushNamed(context, Login.routeName);
+
+    counter.increment();
+    LocalStore.setLocalStorage('opencount', counter.value);
   }
 }
