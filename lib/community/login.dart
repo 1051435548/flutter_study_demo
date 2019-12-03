@@ -1,11 +1,15 @@
 import 'dart:convert';
 
+import 'package:Flutter/common/Global.dart';
+import 'package:Flutter/community/ProgressDialog.dart';
+import 'package:Flutter/mobx/counter.dart';
 import 'package:Flutter/utils/HttpUtils.dart';
 import 'package:Flutter/utils/LocalStore.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 import 'binduser.dart';
 
@@ -27,6 +31,7 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  final Counter counter = new Counter();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _obscureText = true;
   var _usernameText = '';
@@ -61,31 +66,37 @@ class _LoginState extends State<Login> {
         ),
         centerTitle: true,
       ),
-      body: new Padding(
-        padding: EdgeInsets.only(top: 60.0),
-        child: new Container(
-          height: 450.0,
-          padding: EdgeInsets.all(16.0),
-          margin: EdgeInsets.all(24.0),
-          decoration: BoxDecoration(
-            color: Colors.white10,
-            border: Border(
-              left: _outBorderSide,
-              right: _outBorderSide,
-              top: _outBorderSide,
-              bottom: _outBorderSide,
+      body: Observer(
+        builder: (_) => ProgressDialog(
+          loading: counter.isLoading,
+          msg: '正在登录...',
+          child: Padding(
+            padding: EdgeInsets.only(top: 60.0),
+            child: new Container(
+              height: 450.0,
+              padding: EdgeInsets.all(16.0),
+              margin: EdgeInsets.all(24.0),
+              decoration: BoxDecoration(
+                color: Colors.white10,
+                border: Border(
+                  left: _outBorderSide,
+                  right: _outBorderSide,
+                  top: _outBorderSide,
+                  bottom: _outBorderSide,
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+              ),
+              child: new Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  _usernameWidget(),
+                  _passwordWidget(),
+                  _loginButton(context),
+                  _iconsWidget(),
+                  _registerButton(context),
+                ],
+              ),
             ),
-            borderRadius: BorderRadius.all(Radius.circular(5.0)),
-          ),
-          child: new Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              _usernameWidget(),
-              _passwordWidget(),
-              _loginButton(context),
-              _iconsWidget(),
-              _registerButton(context),
-            ],
           ),
         ),
       ),
@@ -239,14 +250,21 @@ class _LoginState extends State<Login> {
    * 登录的方法
    */
   _login(BuildContext context) async {
+    counter.changeLoading(true);
+    print(counter.isLoading);
     final ThemeData theme = Theme.of(context);
     final TextStyle dialogTextStyle =
         theme.textTheme.subhead.copyWith(color: theme.textTheme.caption.color);
-    const url = 'http://192.168.50.104:8181/authenticate';
+    const url = Global.loginURL + '/auth/codelogin';
     HttpUtils.post(
       url,
       pathParams: null,
-      data: {"username": _usernameText, "password": _passwordText},
+      data: {
+        "data": {
+          "type": "codelogin",
+          "attributes": {"phone": _usernameText, "auth_code": _passwordText}
+        }
+      },
     ).then((res) {
       var decode = json.encode(res);
       LocalStore.setLocalStorage('auth', decode).then((isOk) {
@@ -268,13 +286,16 @@ class _LoginState extends State<Login> {
           actions: <Widget>[
             FlatButton(
               child: const Text('确定'),
-              onPressed: () { Navigator.pop(context); },
+              onPressed: () {
+                Navigator.pop(context);
+              },
             )
           ],
         ),
       );
     }).whenComplete(() {
       print('Http is Complete');
+      counter.changeLoading(false);
     });
   }
 

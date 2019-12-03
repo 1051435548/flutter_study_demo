@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:Flutter/models/agmAuth.dart';
 import 'package:Flutter/models/auth.dart';
 import 'package:Flutter/utils/LocalStore.dart';
 import 'package:flutter/cupertino.dart';
@@ -22,45 +23,48 @@ class _BindUserState extends State<BindUser> {
   @override
   Widget build(BuildContext context) {
     BorderSide _outBorderSide = BorderSide(color: Colors.grey[500], width: 0);
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: new AppBar(
-        backgroundColor: Colors.white,
-        title: new Text(
-          '绑定账号',
-          style:
-              new TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-      ),
-      body: new Padding(
-        padding: EdgeInsets.only(top: 60.0),
-        child: new Container(
-          height: 400.0,
-          padding: EdgeInsets.all(16.0),
-          margin: EdgeInsets.all(24.0),
-          decoration: BoxDecoration(
-            color: Colors.white10,
-            border: Border(
-              left: _outBorderSide,
-              right: _outBorderSide,
-              top: _outBorderSide,
-              bottom: _outBorderSide,
-            ),
-            borderRadius: BorderRadius.all(Radius.circular(5.0)),
+    return WillPopScope(
+      onWillPop: () => _showMessage(context, "信息", "返回键被点击，将要返回第一页"),
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: new AppBar(
+          backgroundColor: Colors.white,
+          title: new Text(
+            '绑定账号',
+            style:
+                new TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
-          child: new Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              _usernameWidget(),
-              _passwordWidget(),
-              _phoneWidget(),
-              _smsCodeWidget(),
-              const SizedBox(
-                height: 10.0,
+          centerTitle: true,
+        ),
+        body: new Padding(
+          padding: EdgeInsets.only(top: 60.0),
+          child: new Container(
+            height: 400.0,
+            padding: EdgeInsets.all(16.0),
+            margin: EdgeInsets.all(24.0),
+            decoration: BoxDecoration(
+              color: Colors.white10,
+              border: Border(
+                left: _outBorderSide,
+                right: _outBorderSide,
+                top: _outBorderSide,
+                bottom: _outBorderSide,
               ),
-              _bindUserButton(context),
-            ],
+              borderRadius: BorderRadius.all(Radius.circular(5.0)),
+            ),
+            child: new Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                _usernameWidget(),
+                _passwordWidget(),
+                _phoneWidget(),
+                _smsCodeWidget(),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                _bindUserButton(context),
+              ],
+            ),
           ),
         ),
       ),
@@ -242,11 +246,44 @@ class _BindUserState extends State<BindUser> {
     Navigator.pushNamed(context, BindHouse.routeName);
     LocalStore.getStringLocalStorage('auth').then((data) {
       Map<String, dynamic> responseJson = json.decode(data);
-      Auth auth = new Auth.fromJson(responseJson);
-      print("本地的userId值: " + auth.userId.toString());
-      print("本地的token值: " + auth.token.toString());
-    }).catchError((error){
+//      Auth auth = new Auth.fromJson(responseJson);
+      AgmAuth auth = new AgmAuth.fromJson(responseJson);
+      print("本地的userId值: " +
+          auth.data['relationships']['user']['data']['id'].toString());
+      print("本地的token值: " + auth.data['id']);
+    }).catchError((error) {
       print('获取数据失败$error');
     });
+  }
+
+  /// 展示模态框信息
+  Future<void> _showMessage(
+      BuildContext context, String title, String message) {
+    return showDialog<void>(
+      context: context,
+
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Text(message),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

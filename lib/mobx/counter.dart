@@ -8,6 +8,10 @@ abstract class _Counter with Store {
   @observable
   int value = 0;
 
+  @observable
+  bool isLoading = false;
+
+
   @action
   void increment() {
     value++;
@@ -21,5 +25,10 @@ abstract class _Counter with Store {
   @action
   void set(int value) {
     this.value = value;
+  }
+
+  @action
+  void changeLoading(bool isLoading){
+    this.isLoading = isLoading;
   }
 }

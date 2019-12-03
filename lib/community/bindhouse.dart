@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:Flutter/community/opendoor.dart';
+import 'package:Flutter/utils/LocalStore.dart';
 import 'package:flutter/material.dart';
+import 'package:Flutter/mobx/counter.dart';
 
 class BindHouse extends StatefulWidget {
   @override
@@ -10,6 +14,7 @@ class BindHouse extends StatefulWidget {
 }
 
 class _BindHouseState extends State<BindHouse> {
+  final Counter counter = new Counter();
   bool _checkValue = false;
   final _houseList = <String>[
     '天龙小区2401',
@@ -57,7 +62,15 @@ class _BindHouseState extends State<BindHouse> {
               new Container(
                 padding: EdgeInsets.all(16.0),
                 margin: EdgeInsets.only(left: 24.0, right: 24.0),
-                child: _bindHouseButton(context),
+                child: Column(
+                  children: <Widget>[
+                    _bindHouseButton(context),
+                    const SizedBox(
+                      height: 20.0,
+                    ),
+                    _logoutButton(context),
+                  ],
+                ),
               )
             ],
           )),
@@ -100,13 +113,45 @@ class _BindHouseState extends State<BindHouse> {
       height: 50.0,
       color: Colors.teal,
       textColor: Colors.white,
-      onPressed: () {
-
-      },
+      onPressed: () {},
       child: Text(
         "绑定",
         style: new TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
     );
+  }
+
+  /// 登出按钮
+  Widget _logoutButton(BuildContext context) {
+    return new MaterialButton(
+      minWidth: double.infinity,
+      height: 50.0,
+      color: Colors.lightGreen,
+      textColor: Colors.white,
+      onPressed: () {
+        _logout(context);
+      },
+      child: Text(
+        "退出登录",
+        style: new TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  /// 退出的方法
+  _logout(BuildContext context) {
+    LocalStore.removeLocalStorage('auth').then((isOk) {
+      print(isOk);
+      if (isOk) {
+        counter.set(0);
+        LocalStore.setLocalStorage('opencount', counter.value);
+        print(counter.value);
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          '/',
+          (route) => route == null,
+        );
+      }
+    });
+
   }
 }

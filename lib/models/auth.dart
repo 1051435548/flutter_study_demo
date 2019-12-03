@@ -8,7 +8,7 @@ class Auth {
 
     num userId;
     String token;
-
+    
     factory Auth.fromJson(Map<String,dynamic> json) => _$AuthFromJson(json);
     Map<String, dynamic> toJson() => _$AuthToJson(this);
 }

@@ -1,3 +1,4 @@
+import 'package:Flutter/community/binduser.dart';
 import 'package:Flutter/community/login.dart';
 import 'package:Flutter/mobx/counter.dart';
 import 'package:Flutter/utils/LocalStore.dart';
@@ -31,23 +32,26 @@ class _OpenDoorState extends State<OpenDoor> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: new AppBar(
-        backgroundColor: Colors.white,
-        title: new Text(
-          '开门',
-          style:
-              new TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+    return WillPopScope(
+      onWillPop: doubleClickBack,
+      child: Scaffold(
+        appBar: new AppBar(
+          backgroundColor: Colors.white,
+          title: new Text(
+            '开门',
+            style:
+                new TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          ),
+          centerTitle: true,
         ),
-        centerTitle: true,
-      ),
-      body: new Center(
-        child: new Column(
-          children: <Widget>[
-            _openDoorButton(context),
-            _selectDropDown(context),
-            _openCount(context),
-          ],
+        body: new Center(
+          child: new Column(
+            children: <Widget>[
+              _openDoorButton(context),
+              _selectDropDown(context),
+              _openCount(context),
+            ],
+          ),
         ),
       ),
     );
@@ -188,9 +192,48 @@ class _OpenDoorState extends State<OpenDoor> {
    * 点击开门按钮
    */
   void _openDoor(BuildContext context) {
-    Navigator.pushNamed(context, Login.routeName);
+    LocalStore.getStringLocalStorage('auth').then((data) {
+      if (data != null) {
+        counter.increment();
+        LocalStore.setLocalStorage('opencount', counter.value);
+        Navigator.pushNamed(context, BindUser.routeName);
+      } else {
+        counter.set(0);
+        LocalStore.setLocalStorage('opencount', counter.value);
+        Navigator.pushNamed(context, Login.routeName);
+      }
+    }).catchError((error) {
+      Navigator.pushNamed(context, Login.routeName);
+    });
+  }
 
-    counter.increment();
-    LocalStore.setLocalStorage('opencount', counter.value);
+  int last = 0;
+
+  /// 双击返回退出应用
+  Future<bool> doubleClickBack() {
+    //计算两次时间间隔
+    int now = DateTime.now().millisecondsSinceEpoch;
+    if (now - last > 2000) {
+      last = DateTime.now().millisecondsSinceEpoch;
+      showModalBottomSheet<void>(
+          context: context,
+          builder: (BuildContext context) {
+            return Container(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Text(
+                  '再次点击返回键退出应用',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 18.0,
+                  ),
+                ),
+              ),
+            );
+          });
+      return Future.value(false);
+    } else {
+      return Future.value(true);
+    }
   }
 }

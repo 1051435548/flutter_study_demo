@@ -1,0 +1,31 @@
+{
+  "data": {
+    "type": "token",
+    "id": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS4xMG5pdS5jbi9hdXRoL2NvZGVsb2dpbiIsImlhdCI6MTU3NTM1NzMxOCwiZXhwIjoxNTc1NDQzNzE4LCJuYmYiOjE1NzUzNTczMTgsImp0aSI6IjdjNGMzY2M3ODkxZmIyMmJkYTM0NDFmZTUyZDMxYzI1Iiwic3ViIjo1MjY4fQ.GWtOac_vcaCLy-ljCKsh9bexq1vQPY3gDk-D4_-TrHk",
+    "relationships": {
+      "user": {
+        "data": {
+          "type": "uid",
+          "id": 5268
+        }
+      }
+    }
+  },
+  "included": [
+    {
+      "type": "uid",
+      "id": 5268,
+      "attributes": {
+        "uid": 5268,
+        "parent": 1,
+        "staff": 1,
+        "wx_token": "",
+        "openid": ""
+      },
+      "app_index_switch": {
+        "app_index_notice_switch": 1,
+        "app_index_attendance_switch": 1
+      }
+    }
+  ]
+}

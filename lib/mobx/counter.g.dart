@@ -26,6 +26,23 @@ mixin _$Counter on _Counter, Store {
     }, _$valueAtom, name: '${_$valueAtom.name}_set');
   }
 
+  final _$isLoadingAtom = Atom(name: '_Counter.isLoading');
+
+  @override
+  bool get isLoading {
+    _$isLoadingAtom.context.enforceReadPolicy(_$isLoadingAtom);
+    _$isLoadingAtom.reportObserved();
+    return super.isLoading;
+  }
+
+  @override
+  set isLoading(bool value) {
+    _$isLoadingAtom.context.conditionallyRunInAction(() {
+      super.isLoading = value;
+      _$isLoadingAtom.reportChanged();
+    }, _$isLoadingAtom, name: '${_$isLoadingAtom.name}_set');
+  }
+
   final _$_CounterActionController = ActionController(name: '_Counter');
 
   @override
@@ -53,6 +70,16 @@ mixin _$Counter on _Counter, Store {
     final _$actionInfo = _$_CounterActionController.startAction();
     try {
       return super.set(value);
+    } finally {
+      _$_CounterActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void changeLoading(bool isLoading) {
+    final _$actionInfo = _$_CounterActionController.startAction();
+    try {
+      return super.changeLoading(isLoading);
     } finally {
       _$_CounterActionController.endAction(_$actionInfo);
     }
