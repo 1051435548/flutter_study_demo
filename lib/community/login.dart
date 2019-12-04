@@ -53,51 +53,168 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    BorderSide _outBorderSide = BorderSide(color: Colors.grey[500], width: 0);
     return Scaffold(
       /// 防止点击输入框时页面被压缩
       resizeToAvoidBottomInset: false,
-      appBar: new AppBar(
-        backgroundColor: Colors.white,
-        title: new Text(
-          '登录',
-          style:
-              new TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-      ),
       body: Observer(
         builder: (_) => ProgressDialog(
           loading: counter.isLoading,
           msg: '正在登录...',
-          child: Padding(
-            padding: EdgeInsets.only(top: 60.0),
-            child: new Container(
-              height: 450.0,
-              padding: EdgeInsets.all(16.0),
-              margin: EdgeInsets.all(24.0),
-              decoration: BoxDecoration(
-                color: Colors.white10,
-                border: Border(
-                  left: _outBorderSide,
-                  right: _outBorderSide,
-                  top: _outBorderSide,
-                  bottom: _outBorderSide,
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(5.0)),
-              ),
-              child: new Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+          child: SafeArea(
+            child: Container(
+              color: Colors.white,
+              padding: EdgeInsets.only(left: 40.0, right: 40.0),
+              child: Column(
                 children: <Widget>[
+                  _logoWidget(context),
                   _usernameWidget(),
                   _passwordWidget(),
+                  _forgetPwdWidget(),
                   _loginButton(context),
-                  _iconsWidget(),
                   _registerButton(context),
+                  _textDividerWidget(),
+                  _iconsWidget(),
                 ],
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  /// Logo
+  Widget _logoWidget(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          alignment: Alignment.topLeft,
+          child: Padding(
+            padding: EdgeInsets.only(top: 80.0),
+            child: Image.asset(
+              'images/logo.png',
+              width: 80.0, //屏幕最大宽度
+              height: 80.0,
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 40.0,
+        ),
+        Text(
+          '欢迎来到 xxx!',
+          style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+        ),
+        SizedBox(
+          height: 5.0,
+        ),
+        Text(
+          '登录后提供更优质的功能',
+          style: TextStyle(color: Colors.grey[400], fontSize: 13),
+        ),
+      ],
+    );
+  }
+
+  // ignore: slash_for_doc_comments
+  /**
+   * 账号输入框
+   */
+  Widget _usernameWidget() {
+    return Container(
+      padding: EdgeInsets.only(top: 50.0),
+      child: Row(
+        children: <Widget>[
+          Text(
+            '账    号：',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          Expanded(
+            child: TextField(
+              onChanged: (text) {
+                setState(() {
+                  _usernameText = text;
+                });
+              },
+              decoration: InputDecoration(
+//              border: OutlineInputBorder(),
+//              hintText: '请输入账号',
+//              prefixIcon: Icon(Icons.person),
+                hintText: '用户名/手机/邮箱',
+                hintStyle: TextStyle(fontSize: 14, color: Colors.grey[400]),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // ignore: slash_for_doc_comments
+  /**
+   * 密码输入框
+   */
+  Widget _passwordWidget() {
+    return Container(
+      padding: EdgeInsets.only(top: 20.0),
+      child: Row(
+        children: <Widget>[
+          Text(
+            '密    码：',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          Expanded(
+            child: TextField(
+              obscureText: _obscureText,
+              onChanged: (text) {
+                setState(() {
+                  _passwordText = text;
+                });
+              },
+              decoration: InputDecoration(
+//              border: OutlineInputBorder(),
+                hintText: '请输入密码',
+                hintStyle: TextStyle(fontSize: 14, color: Colors.grey[400]),
+                suffixIcon: GestureDetector(
+                  dragStartBehavior: DragStartBehavior.down,
+                  onTap: () {
+                    setState(() {
+                      _obscureText = !_obscureText;
+                    });
+                  },
+                  child: Icon(
+                    _obscureText ? Icons.visibility : Icons.visibility_off,
+                    semanticLabel:
+                        _obscureText ? 'show password' : 'hide password',
+                  ),
+                ),
+//              labelText: '',
+//              prefixIcon: Icon(Icons.person),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// 忘记密码
+  Widget _forgetPwdWidget() {
+    return Container(
+      padding: EdgeInsets.only(top: 5.0),
+      alignment: Alignment.centerRight,
+      child: Text(
+        '忘记密码？',
+        style: TextStyle(
+          decoration: TextDecoration.underline,
+          color: Colors.grey[600],
         ),
       ),
     );
@@ -108,17 +225,23 @@ class _LoginState extends State<Login> {
    * 登录按钮
    */
   Widget _loginButton(BuildContext context) {
-    return new MaterialButton(
-      minWidth: double.infinity,
-      height: 50.0,
-      color: Colors.teal,
-      textColor: Colors.white,
-      onPressed: () {
-        _login(context);
-      },
-      child: Text(
-        "登录",
-        style: new TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    return Container(
+      padding: EdgeInsets.only(top: 60.0),
+      child: MaterialButton(
+        minWidth: double.infinity,
+        height: 50.0,
+        color: Colors.black,
+        textColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(25)),
+        ),
+        onPressed: () {
+          _login(context);
+        },
+        child: Text(
+          "登录",
+          style: new TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }
@@ -128,98 +251,34 @@ class _LoginState extends State<Login> {
    * 注册按钮
    */
   Widget _registerButton(BuildContext context) {
-    return new SizedBox(
-      width: double.infinity,
-      height: 50,
-      child: RaisedButton(
-        onPressed: () {
-          _register(context);
-        },
-        child: Text(
-          "注册",
-          style: new TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        color: Colors.orange,
-        textColor: Colors.white,
+    return Container(
+      padding: EdgeInsets.only(top: 30.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text('新用户? '),
+          GestureDetector(
+            onTap: () {
+              _register(context);
+            },
+            child: Text(
+              '注册',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                decoration: TextDecoration.underline,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  // ignore: slash_for_doc_comments
-  /**
-   * 账号输入框
-   */
-  Widget _usernameWidget() {
-    return new Row(
-      children: <Widget>[
-        new Text(
-          '账    号：',
-          style: new TextStyle(
-              fontSize: 16, color: Colors.teal, fontWeight: FontWeight.w500),
-        ),
-        new Expanded(
-          child: new TextField(
-            onChanged: (text) {
-              setState(() {
-                _usernameText = text;
-              });
-            },
-            decoration: InputDecoration(
-//              border: OutlineInputBorder(),
-//              hintText: '请输入账号',
-//              prefixIcon: Icon(Icons.person),
-              hintText: '用户名/手机/邮箱',
-              hintStyle: new TextStyle(fontSize: 14, color: Colors.grey[400]),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  // ignore: slash_for_doc_comments
-  /**
-   * 密码输入框
-   */
-  Widget _passwordWidget() {
-    return new Row(
-      children: <Widget>[
-        new Text(
-          '密    码：',
-          style: new TextStyle(
-              fontSize: 16, color: Colors.teal, fontWeight: FontWeight.w500),
-        ),
-        new Expanded(
-          child: new TextField(
-            obscureText: _obscureText,
-            onChanged: (text) {
-              setState(() {
-                _passwordText = text;
-              });
-            },
-            decoration: InputDecoration(
-//              border: OutlineInputBorder(),
-              hintText: '请输入密码',
-              hintStyle: new TextStyle(fontSize: 14, color: Colors.grey[400]),
-              suffixIcon: GestureDetector(
-                dragStartBehavior: DragStartBehavior.down,
-                onTap: () {
-                  setState(() {
-                    _obscureText = !_obscureText;
-                  });
-                },
-                child: Icon(
-                  _obscureText ? Icons.visibility : Icons.visibility_off,
-                  semanticLabel:
-                      _obscureText ? 'show password' : 'hide password',
-                ),
-              ),
-//              labelText: '',
-//              prefixIcon: Icon(Icons.person),
-            ),
-          ),
-        ),
-      ],
+  /// 分割线
+  Widget _textDividerWidget() {
+    return Container(
+      padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0),
+      child: Divider(height: 1.0, indent: 0.0, color: Colors.grey),
     );
   }
 
@@ -228,21 +287,22 @@ class _LoginState extends State<Login> {
    * 第三方登录图标
    */
   Widget _iconsWidget() {
-    return new Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        _bottomIcon('images/facebook.png'),
-        _bottomIcon('images/ins.png'),
-        _bottomIcon('images/linkedin.png'),
-        _bottomIcon('images/twitter.png'),
-      ],
+    return Container(
+      padding: EdgeInsets.only(top: 20.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          _bottomIcon('images/facebook.png'),
+          _bottomIcon('images/ins.png'),
+          _bottomIcon('images/linkedin.png'),
+          _bottomIcon('images/twitter.png'),
+        ],
+      ),
     );
   }
 
   Widget _bottomIcon(String icon) {
-//    TextStyle _textStyle = new TextStyle(
-//        color: Colors.teal, fontSize: 12, fontWeight: FontWeight.w600);
-    return new IconButton(icon: Image.asset(icon), onPressed: () {});
+    return IconButton(icon: Image.asset(icon), onPressed: () {});
   }
 
   // ignore: slash_for_doc_comments
@@ -270,7 +330,7 @@ class _LoginState extends State<Login> {
       LocalStore.setLocalStorage('auth', decode).then((isOk) {
         print('保存数据是否成功：$isOk');
         if (isOk) {
-          Navigator.pushNamed(context, BindUser.routeName);
+          Navigator.pushReplacementNamed(context, BindUser.routeName);
         }
       });
     }).catchError((Object error) {

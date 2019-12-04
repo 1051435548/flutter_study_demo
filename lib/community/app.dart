@@ -9,7 +9,7 @@ class CommunityApp extends StatelessWidget {
     return MaterialApp(
       title: 'CommunityApp',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.black,
       ),
       home: OpenDoor(),
       routes: _buildRoutes(),

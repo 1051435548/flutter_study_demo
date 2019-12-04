@@ -101,8 +101,7 @@ class _OpenDoorState extends State<OpenDoor> {
         children: <Widget>[
           ListTile(
             title: new Text(
-              '选择小区',
-              style: new TextStyle(color: Colors.grey[500]),
+              '选择小区：',
             ),
             trailing: DropdownButton<String>(
               value: villageValue,
@@ -123,8 +122,7 @@ class _OpenDoorState extends State<OpenDoor> {
           ),
           ListTile(
             title: new Text(
-              '选择大门',
-              style: new TextStyle(color: Colors.grey[500]),
+              '选择大门：',
             ),
             trailing: DropdownButton<String>(
               value: gateValue,

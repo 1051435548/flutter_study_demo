@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:Flutter/community/login.dart';
+import 'package:Flutter/community/opendoor.dart';
 import 'package:Flutter/models/agmAuth.dart';
 import 'package:Flutter/models/auth.dart';
 import 'package:Flutter/utils/LocalStore.dart';
@@ -24,7 +26,7 @@ class _BindUserState extends State<BindUser> {
   Widget build(BuildContext context) {
     BorderSide _outBorderSide = BorderSide(color: Colors.grey[500], width: 0);
     return WillPopScope(
-      onWillPop: () => _showMessage(context, "信息", "返回键被点击，将要返回第一页"),
+      onWillPop: () => _showMessage(context, "信息", "手机返回键被点击，将要返回上一页"),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: new AppBar(
