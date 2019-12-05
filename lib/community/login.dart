@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:Flutter/common/Global.dart';
 import 'package:Flutter/community/ProgressDialog.dart';
+import 'package:Flutter/community/drawer.dart';
 import 'package:Flutter/mobx/counter.dart';
 import 'package:Flutter/utils/HttpUtils.dart';
 import 'package:Flutter/utils/LocalStore.dart';
@@ -80,6 +81,7 @@ class _LoginState extends State<Login> {
           ),
         ),
       ),
+      drawer: ShowDrawer(),
     );
   }
 
@@ -227,11 +229,11 @@ class _LoginState extends State<Login> {
   Widget _loginButton(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(top: 60.0),
-      child: MaterialButton(
-        minWidth: double.infinity,
-        height: 50.0,
-        color: Colors.black,
-        textColor: Colors.white,
+      child: RaisedButton(
+//        minWidth: double.infinity,
+//        height: 50.0,
+//        color: Colors.black,
+//        textColor: Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(25)),
         ),
@@ -240,7 +242,7 @@ class _LoginState extends State<Login> {
         },
         child: Text(
           "登录",
-          style: new TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.title,
         ),
       ),
     );

@@ -1,11 +1,12 @@
+import 'package:Flutter/common/CustomTheme.dart';
 import 'package:Flutter/community/binduser.dart';
+import 'package:Flutter/community/drawer.dart';
 import 'package:Flutter/community/login.dart';
 import 'package:Flutter/mobx/counter.dart';
 import 'package:Flutter/utils/LocalStore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mobx/mobx.dart';
 
 class OpenDoor extends StatefulWidget {
   const OpenDoor({Key key}) : super(key: key);
@@ -36,7 +37,7 @@ class _OpenDoorState extends State<OpenDoor> {
       onWillPop: doubleClickBack,
       child: Scaffold(
         appBar: new AppBar(
-          backgroundColor: Colors.white,
+//          backgroundColor: Colors.white,
           title: new Text(
             '开门',
             style:
@@ -53,6 +54,7 @@ class _OpenDoorState extends State<OpenDoor> {
             ],
           ),
         ),
+        drawer: ShowDrawer(),
       ),
     );
   }

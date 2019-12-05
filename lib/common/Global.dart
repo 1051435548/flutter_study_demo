@@ -1,12 +1,5 @@
 import 'package:flutter/material.dart';
 
-const _themes = <MaterialColor>[
-  Colors.blue,
-  Colors.cyan,
-  Colors.teal,
-  Colors.green,
-  Colors.red,
-];
 
 class Global {
   // 可选的主题列表
@@ -15,7 +8,7 @@ class Global {
   // 是否为release版
   static bool get isRelease => bool.fromEnvironment("dart.vm.product");
 
-  static const loginURL = 'https://api.10niu.cn';
+  static const loginURL = 'http://api.10niu.cn';
 
   static bool isLogin = false;
 }
