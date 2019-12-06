@@ -1,7 +1,9 @@
 import 'package:Flutter/common/CustomTheme.dart';
 import 'package:Flutter/community/login.dart';
+import 'package:Flutter/community/opendoor.dart';
 import 'package:Flutter/provider/themeProvider.dart';
 import 'package:Flutter/utils/LocalStore.dart';
+import 'package:Flutter/utils/ToastUtil.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -47,6 +49,15 @@ class _ShowDrawerState extends State<ShowDrawer> with TickerProviderStateMixin {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         ListTile(
+          leading: Icon(Icons.done_outline),
+          title: Text("开门"),
+          trailing: Icon(Icons.chevron_right),
+          onTap: () {
+            Navigator.pushNamed(context, OpenDoor.routeName);
+          },
+        ),
+        Divider(),
+        ListTile(
           leading: Icon(Icons.color_lens),
           title: Text("切换主题"),
           trailing: Icon(Icons.chevron_right),
@@ -58,10 +69,22 @@ class _ShowDrawerState extends State<ShowDrawer> with TickerProviderStateMixin {
         Divider(),
         ListTile(
           leading: Icon(Icons.timer),
-          title: Text('$time'),
+          title: Text(
+            '$time',
+            style: TextStyle(fontWeight: FontWeight.normal),
+          ),
           trailing: Icon(Icons.chevron_right),
           onTap: () {
-
+            _showTime(time);
+          },
+        ),
+        Divider(),
+        ListTile(
+          leading: Icon(Icons.call_missed_outgoing),
+          title: Text('退出'),
+          trailing: Icon(Icons.chevron_right),
+          onTap: () {
+            _logout();
           },
         ),
       ],
@@ -113,5 +136,23 @@ class _ShowDrawerState extends State<ShowDrawer> with TickerProviderStateMixin {
         );
       },
     );
+  }
+
+  /// 退出的方法
+  void _logout() {
+    LocalStore.removeLocalStorage('auth').then((isOk) {
+      print(isOk);
+      if (isOk) {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          '/',
+          (route) => route == null,
+        );
+      }
+    });
+  }
+
+  void _showTime(DateTime time) {
+    Navigator.pop(context);
+    ToastUtil.show(context: context, msg: time.toString());
   }
 }

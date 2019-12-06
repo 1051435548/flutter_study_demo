@@ -7,7 +7,7 @@ import 'package:meta/meta.dart';
 ///
 /// Toast 简单封装
 ///
-class YToast {
+class ToastUtil {
   static show({
     @required BuildContext context,
     @required String msg,

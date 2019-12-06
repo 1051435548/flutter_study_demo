@@ -81,7 +81,6 @@ class _LoginState extends State<Login> {
           ),
         ),
       ),
-      drawer: ShowDrawer(),
     );
   }
 
@@ -137,6 +136,7 @@ class _LoginState extends State<Login> {
           ),
           Expanded(
             child: TextField(
+              keyboardType: TextInputType.number,
               onChanged: (text) {
                 setState(() {
                   _usernameText = text;

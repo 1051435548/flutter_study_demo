@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ThemeProvide extends ChangeNotifier {
+class ThemeProvide with ChangeNotifier {
   int _themeIndex;
 
   int get value => _themeIndex;

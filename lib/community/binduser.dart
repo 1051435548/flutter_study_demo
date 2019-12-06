@@ -1,9 +1,6 @@
 import 'dart:convert';
 
-import 'package:Flutter/community/login.dart';
-import 'package:Flutter/community/opendoor.dart';
 import 'package:Flutter/models/agmAuth.dart';
-import 'package:Flutter/models/auth.dart';
 import 'package:Flutter/utils/LocalStore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -26,15 +23,13 @@ class _BindUserState extends State<BindUser> {
   Widget build(BuildContext context) {
     BorderSide _outBorderSide = BorderSide(color: Colors.grey[500], width: 0);
     return WillPopScope(
-      onWillPop: () => _showMessage(context, "信息", "手机返回键被点击，将要返回上一页"),
+      onWillPop: () => _showMessage(context, "信息", "触发手机按键返回事件"),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: new AppBar(
-          backgroundColor: Colors.white,
           title: new Text(
             '绑定账号',
-            style:
-                new TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
         ),
@@ -165,16 +160,16 @@ class _BindUserState extends State<BindUser> {
             ),
           ),
         ),
-        new MaterialButton(
-          minWidth: 110.0,
-          color: Colors.teal,
-          onPressed: () {
-            _sendSMSCode(context);
-          },
-          child: new Text(
-            '发送验证码',
-            style: new TextStyle(color: Colors.white),
-            textAlign: TextAlign.center,
+        new SizedBox(
+          width: 120.0,
+          child: RaisedButton(
+            onPressed: () {
+              _sendSMSCode(context);
+            },
+            child: new Text(
+              '发送验证码',
+              textAlign: TextAlign.center,
+            ),
           ),
         ),
       ],
@@ -215,11 +210,7 @@ class _BindUserState extends State<BindUser> {
    * 绑定用户按钮
    */
   Widget _bindUserButton(BuildContext context) {
-    return new MaterialButton(
-      minWidth: double.infinity,
-      height: 50.0,
-      color: Colors.teal,
-      textColor: Colors.white,
+    return new RaisedButton(
       onPressed: () {
         _bindUser(context);
       },

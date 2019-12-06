@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:Flutter/common/Global.dart';
 import 'package:Flutter/community/app.dart';
 import 'package:Flutter/demo/animation1.dart';
 import 'package:Flutter/demo/animation2.dart';
@@ -19,7 +22,10 @@ void main() async {
 
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider.value(value: theme),
+//      ChangeNotifierProvider.value(value: theme),
+      ChangeNotifierProvider(
+        create: (_) => ThemeProvide(),
+      ),
     ],
     child: CommunityApp(themeIndex),
   ));

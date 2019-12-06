@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:Flutter/community/home.dart';
 import 'package:Flutter/community/opendoor.dart';
 import 'package:Flutter/utils/LocalStore.dart';
 import 'package:flutter/material.dart';
@@ -31,11 +32,9 @@ class _BindHouseState extends State<BindHouse> {
     BorderSide _outBorderSide = BorderSide(color: Colors.grey[500], width: 0);
     return Scaffold(
       appBar: new AppBar(
-        backgroundColor: Colors.white,
         title: new Text(
           '绑定房屋',
-          style:
-              new TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: new TextStyle(fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
       ),
@@ -68,7 +67,7 @@ class _BindHouseState extends State<BindHouse> {
                     const SizedBox(
                       height: 20.0,
                     ),
-                    _logoutButton(context),
+//                    _logoutButton(context),
                   ],
                 ),
               )
@@ -108,12 +107,13 @@ class _BindHouseState extends State<BindHouse> {
    * 绑定房屋按钮
    */
   Widget _bindHouseButton(BuildContext context) {
-    return new MaterialButton(
-      minWidth: double.infinity,
-      height: 50.0,
-      color: Colors.teal,
-      textColor: Colors.white,
-      onPressed: () {},
+    return new RaisedButton(
+      onPressed: () {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          Home.routeName,
+          ModalRoute.withName(OpenDoor.routeName),
+        );
+      },
       child: Text(
         "绑定",
         style: new TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -152,6 +152,5 @@ class _BindHouseState extends State<BindHouse> {
         );
       }
     });
-
   }
 }

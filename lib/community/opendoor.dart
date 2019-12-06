@@ -1,8 +1,10 @@
 import 'package:Flutter/common/CustomTheme.dart';
 import 'package:Flutter/community/binduser.dart';
 import 'package:Flutter/community/drawer.dart';
+import 'package:Flutter/community/home.dart';
 import 'package:Flutter/community/login.dart';
 import 'package:Flutter/mobx/counter.dart';
+import 'package:Flutter/utils/DoubleExit.dart';
 import 'package:Flutter/utils/LocalStore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -33,28 +35,23 @@ class _OpenDoorState extends State<OpenDoor> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: doubleClickBack,
-      child: Scaffold(
-        appBar: new AppBar(
+    return Scaffold(
+      appBar: new AppBar(
 //          backgroundColor: Colors.white,
-          title: new Text(
-            '开门',
-            style:
-                new TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-          ),
-          centerTitle: true,
+        title: new Text(
+          '开门',
+          style: new TextStyle(fontWeight: FontWeight.bold),
         ),
-        body: new Center(
-          child: new Column(
-            children: <Widget>[
-              _openDoorButton(context),
-              _selectDropDown(context),
-              _openCount(context),
-            ],
-          ),
+        centerTitle: true,
+      ),
+      body: new Center(
+        child: new Column(
+          children: <Widget>[
+            _openDoorButton(context),
+            _selectDropDown(context),
+//              _openCount(context),
+          ],
         ),
-        drawer: ShowDrawer(),
       ),
     );
   }
@@ -65,20 +62,20 @@ class _OpenDoorState extends State<OpenDoor> {
    */
   Widget _openDoorButton(BuildContext context) {
     return new Container(
-      margin: EdgeInsets.only(top: (MediaQuery.of(context).size.height) / 6),
+      margin: EdgeInsets.only(top: (MediaQuery.of(context).size.height) / 4),
       width: 180.0,
       height: 180.0,
       decoration: BoxDecoration(shape: BoxShape.circle, boxShadow: [
         BoxShadow(
-          color: Colors.lightBlue,
+//          color: Colors.lightBlue,
           blurRadius: 20,
           spreadRadius: 2,
         ),
       ]),
-      child: FlatButton(
+      child: RaisedButton(
           shape: new RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(90.0))),
-          color: Colors.blue,
+//          color: Colors.blue,
           onPressed: () {
             _openDoor(context);
           },
@@ -196,7 +193,7 @@ class _OpenDoorState extends State<OpenDoor> {
       if (data != null) {
         counter.increment();
         LocalStore.setLocalStorage('opencount', counter.value);
-        Navigator.pushNamed(context, BindUser.routeName);
+        Navigator.pushNamed(context, Home.routeName);
       } else {
         counter.set(0);
         LocalStore.setLocalStorage('opencount', counter.value);
@@ -211,6 +208,7 @@ class _OpenDoorState extends State<OpenDoor> {
 
   /// 双击返回退出应用
   Future<bool> doubleClickBack() {
+    print('触发双击退出事件');
     //计算两次时间间隔
     int now = DateTime.now().millisecondsSinceEpoch;
     if (now - last > 2000) {

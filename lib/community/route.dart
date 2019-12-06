@@ -1,5 +1,6 @@
 import 'package:Flutter/community/bindhouse.dart';
 import 'package:Flutter/community/binduser.dart';
+import 'package:Flutter/community/home.dart';
 import 'package:Flutter/community/login.dart';
 import 'package:Flutter/community/opendoor.dart';
 import 'package:Flutter/community/register.dart';
@@ -40,6 +41,9 @@ List<CommunityRoute> _buildAllRoutes() {
     CommunityRoute(
         routeName: Register.routeName,
         builderRoute: (BuildContext context) => const Register()),
+    CommunityRoute(
+        routeName: Home.routeName,
+        builderRoute: (BuildContext context) => const Home()),
   ];
 
   return communityRoutes;
