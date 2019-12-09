@@ -1,3 +1,4 @@
+import 'package:Flutter/demo/listview.dart';
 import 'package:flutter/material.dart';
 
 class Two extends StatefulWidget {
@@ -8,8 +9,6 @@ class Two extends StatefulWidget {
 class _TwoState extends State<Two> {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('two'),
-    );
+    return YListView();
   }
 }

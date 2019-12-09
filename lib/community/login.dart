@@ -6,6 +6,7 @@ import 'package:Flutter/community/drawer.dart';
 import 'package:Flutter/mobx/counter.dart';
 import 'package:Flutter/utils/HttpUtils.dart';
 import 'package:Flutter/utils/LocalStore.dart';
+import 'package:Flutter/utils/ToastUtil.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -20,6 +21,8 @@ enum DialogDemoAction {
   disagree,
   agree,
 }
+
+enum otherLogin { facebook, ins, linkedin, twitter }
 
 Dio dio = Dio();
 
@@ -294,17 +297,21 @@ class _LoginState extends State<Login> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          _bottomIcon('images/facebook.png'),
-          _bottomIcon('images/ins.png'),
-          _bottomIcon('images/linkedin.png'),
-          _bottomIcon('images/twitter.png'),
+          _bottomIcon('images/facebook.png', otherLogin.facebook),
+          _bottomIcon('images/ins.png', otherLogin.ins),
+          _bottomIcon('images/linkedin.png', otherLogin.linkedin),
+          _bottomIcon('images/twitter.png', otherLogin.twitter),
         ],
       ),
     );
   }
 
-  Widget _bottomIcon(String icon) {
-    return IconButton(icon: Image.asset(icon), onPressed: () {});
+  Widget _bottomIcon(String icon, otherLogin) {
+    return IconButton(
+        icon: Image.asset(icon),
+        onPressed: () {
+          ToastUtil.show(context: context, msg: otherLogin.toString());
+        });
   }
 
   // ignore: slash_for_doc_comments
@@ -340,7 +347,10 @@ class _LoginState extends State<Login> {
       showDemoDialog<DialogDemoAction>(
         context: context,
         child: AlertDialog(
-          title: const Text('登录失败'),
+          title: const Text(
+            '登录失败',
+            style: TextStyle(color: Colors.black),
+          ),
           content: Text(
             '请输入正确的账号和密码',
             style: dialogTextStyle,
