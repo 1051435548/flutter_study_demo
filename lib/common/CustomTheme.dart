@@ -87,5 +87,13 @@ class CustomTheme {
       "colorPrimaryLight": Color(0xffD1C4E9),
       "textTitleColor": Color(0xffffffff),
     },
+    8: {
+      //purple
+      "primaryColor": Color(0xffffffff),
+      "primaryColorDark": Color(0xffffffff),
+      "colorAccent": Color(0xffffffff),
+      "colorPrimaryLight": Color(0xffffffff),
+      "textTitleColor": Color(0xffffffff),
+    },
   };
 }
