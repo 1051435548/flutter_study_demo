@@ -3,6 +3,7 @@ import 'package:Flutter/community/bottomNavigationBar/one.dart';
 import 'package:Flutter/community/bottomNavigationBar/three.dart';
 import 'package:Flutter/community/bottomNavigationBar/two.dart';
 import 'package:Flutter/community/drawer.dart';
+import 'package:Flutter/community/search.dart';
 import 'package:Flutter/utils/DoubleExit.dart';
 import 'package:Flutter/utils/ToastUtil.dart';
 import 'package:flutter/material.dart';
@@ -201,7 +202,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   void _iconClick(BuildContext context) {
     switch (_selectedIndex) {
       case 0:
-        ToastUtil.show(context: context, msg: '准备跳转到首页1');
+        showSearch(context: context, delegate: MySearchDelegate());
         break;
       case 1:
         ToastUtil.show(context: context, msg: '准备跳转到首页2');
