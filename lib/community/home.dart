@@ -128,16 +128,16 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
     Four(),
   ];
 
-  String title = '开门1';
+  String title = '异步';
   var titles = [
-    '开门1',
-    '开门2',
-    '开门3',
-    '开门4',
+    '异步',
+    '列表',
+    '路由/缩放吸顶',
+    '搜索',
   ];
 
-  var icon = Icons.search;
-  var icons = [Icons.search, Icons.star, Icons.share, Icons.near_me];
+  var icon = Icons.near_me;
+  var icons = [Icons.near_me, Icons.star, Icons.share, Icons.search];
 
   @override
   Widget build(BuildContext context) {
@@ -202,7 +202,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
   void _iconClick(BuildContext context) {
     switch (_selectedIndex) {
       case 0:
-        showSearch(context: context, delegate: MySearchDelegate());
+        ToastUtil.show(context: context, msg: '准备跳转到首页1');
         break;
       case 1:
         ToastUtil.show(context: context, msg: '准备跳转到首页2');
@@ -211,7 +211,7 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
         ToastUtil.show(context: context, msg: '准备跳转到首页3');
         break;
       case 3:
-        ToastUtil.show(context: context, msg: '准备跳转到首页4');
+        showSearch(context: context, delegate: MySearchDelegate());
         break;
     }
   }
