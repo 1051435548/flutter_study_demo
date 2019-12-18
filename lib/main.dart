@@ -8,6 +8,7 @@ import 'package:Flutter/demo/animationStateList.dart';
 import 'package:Flutter/demo/listview.dart';
 import 'package:Flutter/demo/mystyle.dart';
 import 'package:Flutter/demo/mystyle2.dart';
+import 'package:Flutter/demo/routeDemo/routeMain.dart';
 import 'package:Flutter/demo/youngademo1.dart';
 import 'package:Flutter/provider/themeProvider.dart';
 import 'package:Flutter/utils/LocalStore.dart';
@@ -28,7 +29,8 @@ void main() async {
         create: (_) => ThemeProvide(),
       ),
     ],
-    child: CommunityApp(themeIndex),
+    child: CommunityApp(themeIndex), // 社区demo
+//    child: RouteMain(), // 路由demo
   ));
 }
 
